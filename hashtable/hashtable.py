@@ -128,9 +128,10 @@ class HashTable:
 
         else:
             if prev is None:
-
-                self.storage[my_hash_index] = node.next
-
+                if node.next is None:
+                    self.storage[my_hash_index] = None
+                else:
+                    self.storage[my_hash_index] = node.next
             else:
                 prev.next = prev.next.next
 
