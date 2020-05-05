@@ -124,16 +124,15 @@ class HashTable:
             node = node.next
 
         if node is None:
-            return None
+            print("I couldn't find the key you're trying to delete")
 
         else:
-            result = node.value
-
             if prev is None:
-                node = None
+
+                self.storage[my_hash_index] = node.next
+
             else:
                 prev.next = prev.next.next
-            return result
 
     def get(self, key):
         """
@@ -187,9 +186,12 @@ if __name__ == "__main__":
 
     # print(f"\nResized from {old_capacity} to {new_capacity}.\n")
 
+    ht.delete("line_2")
+
     # Test if data intact after resizing
     print(ht.get("line_1"))
-    print(ht.get("line_2"))
+    print(ht.get("line_2"), "should be None")
     print(ht.get("line_3"))
+    print(ht.get("line_4"))  # doesn't exist
 
     print("")
