@@ -106,7 +106,7 @@ class HashTable:
         """
         my_key = self.hash_index(key)
 
-        self.storage[my_key] = value
+        self.storage[my_key] = (my_key, value)
 
     def delete(self, key):
         """
@@ -131,15 +131,19 @@ class HashTable:
         Implement this.
         """
         my_key = self.hash_index(key)
-        return self.storage[my_key]
 
-    # def resize(self):
-    #     """
-    #     Doubles the capacity of the hash table and
-    #     rehash all key/value pairs.
+        if self.storage[my_key] is not None:
+            return self.storage[my_key][1]
+        else:
+            return None
 
-    #     Implement this.
-    #     """
+    def resize(self):
+        """
+        Doubles the capacity of the hash table and
+        rehash all key/value pairs.
+
+        Implement this.
+        """
 
 
 if __name__ == "__main__":
