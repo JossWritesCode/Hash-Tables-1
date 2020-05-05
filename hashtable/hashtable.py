@@ -21,7 +21,6 @@ class HashTable:
     def __init__(self, capacity):
         self.capacity = capacity
         self.storage = [None] * self.capacity
-        self.head = None
 
     def fnv1(self, key):
         """
@@ -86,21 +85,26 @@ class HashTable:
         Implement this.
         """
 
-        my_key = self.hash_index(key)
+        my_hash_index = self.hash_index(key)
 
-        node = self.storage[my_key]
+        node = self.storage[my_hash_index]
 
         if node is None:
-            self.storage[my_key] = HashTableEntry(key, value)
+            self.storage[my_hash_index] = HashTableEntry(key, value)
             return
 
         prev = node
 
         while node is not None:
+
+            if node.key == key:
+                node.value = value
+                return
+
             prev = node
             node = node.next
 
-        prev.next = HashTableEntry(my_key, value)
+        prev.next = HashTableEntry(key, value)
 
     def delete(self, key):
         """
@@ -110,9 +114,9 @@ class HashTable:
 
         Implement this.
         """
-        my_key = self.hash_index(key)
+        my_hash_index = self.hash_index(key)
 
-        node = self.storage[my_key]
+        node = self.storage[my_hash_index]
         prev = None
 
         while node is not None and node.key != key:
@@ -139,9 +143,9 @@ class HashTable:
 
         Implement this.
         """
-        my_key = self.hash_index(key)
+        my_hash_index = self.hash_index(key)
 
-        node = self.storage[my_key]
+        node = self.storage[my_hash_index]
 
         while node is not None and node.key != key:
             node = node.next
@@ -149,7 +153,6 @@ class HashTable:
         if node is None:
             return None
         else:
-
             return node.value
 
     def resize(self):
@@ -159,6 +162,8 @@ class HashTable:
 
         Implement this.
         """
+        self.capacity = self.capacity * 2
+        new_array = [None] * self.capacity
 
 
 if __name__ == "__main__":
