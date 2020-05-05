@@ -18,29 +18,10 @@ class HashTable:
 
     """
 
-    # Get bytes for the key
-    # make up a function that returns an index for those bytes
-    # * adding the bytes
-    # * modding with the hash table size
-
-    # def myhash(s):
-    #     bytes = str(s).encode()
-
-    #     total = 0
-
-    #     for b in bytes:
-    #         total += b
-
-    #     return total
-
-    # def hash_index(s):
-    #     h = myhash(s)
-
-    #     return h % hash_table_size
-
     def __init__(self, capacity):
         self.capacity = capacity
         self.storage = [None] * self.capacity
+        self.head = None
 
     def fnv1(self, key):
         """
