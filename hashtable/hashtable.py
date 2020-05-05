@@ -85,9 +85,22 @@ class HashTable:
 
         Implement this.
         """
+
         my_key = self.hash_index(key)
 
-        self.storage[my_key] = (my_key, value)
+        node = self.storage[my_key]
+
+        if node is None:
+            self.storage[my_key] = HashTableEntry(key, value)
+            return
+
+        prev = node
+
+        while node is not None:
+            prev = node
+            node = node.next
+
+        prev.next = HashTableEntry(my_key, value)
 
     def delete(self, key):
         """
@@ -98,10 +111,25 @@ class HashTable:
         Implement this.
         """
         my_key = self.hash_index(key)
-        if self.storage[my_key]:
-            self.storage[my_key] = None
+
+        node = self.storage[my_key]
+        prev = None
+
+        while node is not None and node.key != key:
+            prev = node
+            node = node.next
+
+        if node is None:
+            return None
+
         else:
-            print("key wasn't found")
+            result = node.value
+
+            if prev is None:
+                node = None
+            else:
+                prev.next = prev.next.next
+            return result
 
     def get(self, key):
         """
@@ -113,10 +141,16 @@ class HashTable:
         """
         my_key = self.hash_index(key)
 
-        if self.storage[my_key] is not None:
-            return self.storage[my_key][1]
-        else:
+        node = self.storage[my_key]
+
+        while node is not None and node.key != key:
+            node = node.next
+
+        if node is None:
             return None
+        else:
+
+            return node.value
 
     def resize(self):
         """
