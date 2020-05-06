@@ -124,14 +124,11 @@ class HashTable:
             node = node.next
 
         if node is None:
-            print("I couldn't find the key you're trying to delete")
+            return None
 
         else:
             if prev is None:
-                if node.next is None:
-                    self.storage[my_hash_index] = None
-                else:
-                    self.storage[my_hash_index] = node.next
+                self.storage[my_hash_index] = node.next
             else:
                 prev.next = prev.next.next
 
@@ -151,7 +148,7 @@ class HashTable:
             node = node.next
 
         if node is None:
-            return None
+            print("Sorry, couldn't find that key")
         else:
             return node.value
 
@@ -162,8 +159,16 @@ class HashTable:
 
         Implement this.
         """
+        old_array = self.storage
         self.capacity = self.capacity * 2
         new_array = [None] * self.capacity
+        self.storage = new_array
+
+        for element in old_array:
+            if element is not None:
+                while element is not None:
+                    self.put(element.key, element.value)
+                    element = element.next
 
 
 if __name__ == "__main__":
