@@ -1,3 +1,8 @@
+import math
+
+# import TestHashTable from test
+
+
 class HashTableEntry:
     """
     Hash Table entry, as a linked list node.
@@ -21,6 +26,10 @@ class HashTable:
     def __init__(self, capacity):
         self.capacity = capacity
         self.storage = [None] * self.capacity
+        self.size = 0
+
+    def get_load(self):
+        return float(self.size / self.capacity)
 
     def fnv1(self, key):
         """
@@ -73,7 +82,7 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        return self.fnv1(key) % self.capacity
+        return int(self.fnv1(key) % self.capacity)
         # return self.djb2(key) % self.capacity
 
     def put(self, key, value):
@@ -84,6 +93,11 @@ class HashTable:
 
         Implement this.
         """
+        print(self.get_load(), "self.load 94")
+        print(len(self.storage), "self.capacity? 95")
+        if self.get_load() > 0.8:
+            self.resize()
+            print(len(self.storage), "self.capacity? 98")
 
         my_hash_index = self.hash_index(key)
 
@@ -91,6 +105,7 @@ class HashTable:
 
         if node is None:
             self.storage[my_hash_index] = HashTableEntry(key, value)
+            self.size += 1
             return
 
         prev = node
@@ -105,6 +120,7 @@ class HashTable:
             node = node.next
 
         prev.next = HashTableEntry(key, value)
+        self.size += 1
 
     def delete(self, key):
         """
@@ -124,9 +140,12 @@ class HashTable:
             node = node.next
 
         if node is None:
-            return None
+            print('Sorry, I cannot find that key.')
 
         else:
+            self.size -= 1
+            if self.get_load() < 0.2:
+                self.desize()
             if prev is None:
                 self.storage[my_hash_index] = node.next
             else:
@@ -159,16 +178,32 @@ class HashTable:
 
         Implement this.
         """
+
+        print("resize")
+
         old_array = self.storage
         self.capacity = self.capacity * 2
         new_array = [None] * self.capacity
         self.storage = new_array
+
+        self.size = 0
 
         for element in old_array:
             if element is not None:
                 while element is not None:
                     self.put(element.key, element.value)
                     element = element.next
+
+    def desize(self):
+        old_array = self.storage
+        self.capacity = self.capacity / 2
+        new_array = [None] * math.ceil(self.capacity)
+        self.storage = new_array
+        self.size = 0
+        for element in old_array:
+            if element is not None:
+                self.put(element.key, element.value)
+                element = element.next
 
 
 if __name__ == "__main__":
