@@ -144,12 +144,13 @@ class HashTable:
 
         else:
             self.size -= 1
-            if self.get_load() < 0.2:
-                self.desize()
+
             if prev is None:
                 self.storage[my_hash_index] = node.next
             else:
                 prev.next = prev.next.next
+            if self.get_load() < 0.2:
+                self.desize()
 
     def get(self, key):
         """
