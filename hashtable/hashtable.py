@@ -1,3 +1,6 @@
+import math
+
+
 class HashTableEntry:
     """
     Hash Table entry, as a linked list node.
@@ -21,6 +24,10 @@ class HashTable:
     def __init__(self, capacity):
         self.capacity = capacity
         self.storage = [None] * self.capacity
+        self.size = 0
+
+    def get_load(self):
+        return float(self.size / self.capacity)
 
     def fnv1(self, key):
         """
@@ -84,6 +91,9 @@ class HashTable:
 
         Implement this.
         """
+        print(self.get_load(), "self.load 89")
+        if self.get_load() > 0.7:
+            self.resize()
 
         my_hash_index = self.hash_index(key)
 
@@ -91,6 +101,7 @@ class HashTable:
 
         if node is None:
             self.storage[my_hash_index] = HashTableEntry(key, value)
+            self.size += 1
             return
 
         prev = node
@@ -124,9 +135,14 @@ class HashTable:
             node = node.next
 
         if node is None:
-            return None
+            print('Sorry, I cannot find that key.')
 
         else:
+            print(self.get_load(), "self.load 136")
+            self.size -= 1
+            print(self.get_load(), "self.load 138")
+            if self.get_load() < 0.2:
+                self.desize()
             if prev is None:
                 self.storage[my_hash_index] = node.next
             else:
@@ -169,6 +185,17 @@ class HashTable:
                 while element is not None:
                     self.put(element.key, element.value)
                     element = element.next
+
+    def desize(self):
+        old_array = self.storage
+        self.capacity = self.capacity / 2
+        new_array = [None] * int(self.capacity)
+        self.storage = new_array
+
+        for element in old_array:
+            if element is not None:
+                self.put(element.key, element.value)
+                element = element.next
 
 
 if __name__ == "__main__":
