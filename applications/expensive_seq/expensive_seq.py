@@ -1,5 +1,22 @@
+
+database = {}
+
+
 def expensive_seq(x, y, z):
-    # Implement me
+    if (x, y, z) in database:
+        return database[(x, y, z)]
+    else:
+
+        if x <= 0:
+            answer = y + z
+            database[(x, y, z)] = answer
+            return database[(x, y, z)]
+        if x > 0:
+            answer = expensive_seq(
+                x-1, y+1, z) + expensive_seq(x-2, y+2, z*2) + expensive_seq(x-3, y+3, z*3)
+            database[(x, y, z)] = answer
+            return database[(x, y, z)]
+
 
 if __name__ == "__main__":
     for i in range(10):
