@@ -93,11 +93,9 @@ class HashTable:
 
         Implement this.
         """
-        print(self.get_load(), "self.load 94")
-        print(len(self.storage), "self.capacity? 95")
+
         if self.get_load() > 0.8:
             self.resize()
-            print(len(self.storage), "self.capacity? 98")
 
         my_hash_index = self.hash_index(key)
 
@@ -144,12 +142,13 @@ class HashTable:
 
         else:
             self.size -= 1
-            if self.get_load() < 0.2:
-                self.desize()
+
             if prev is None:
                 self.storage[my_hash_index] = node.next
             else:
                 prev.next = prev.next.next
+            if self.get_load() < 0.2:
+                self.desize()
 
     def get(self, key):
         """
@@ -171,7 +170,7 @@ class HashTable:
         else:
             return node.value
 
-    def resize(self):
+    def resize(self, given_size=None):
         """
         Doubles the capacity of the hash table and
         rehash all key/value pairs.
@@ -179,7 +178,8 @@ class HashTable:
         Implement this.
         """
 
-        print("resize")
+        if given_size is None:
+            return
 
         old_array = self.storage
         self.capacity = self.capacity * 2
