@@ -8,8 +8,7 @@ def expensive_seq(x, y, z):
     else:
 
         if x <= 0:
-            answer = y + z
-            database[(x, y, z)] = answer
+            database[(x, y, z)] = y + z
             return database[(x, y, z)]
         if x > 0:
             answer = expensive_seq(
