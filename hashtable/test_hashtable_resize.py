@@ -153,7 +153,6 @@ class TestHashTable(unittest.TestCase):
         return_value = ht.get("key-9")
         self.assertTrue(return_value is None)
 
-<<<<<<< HEAD
     def test_hash_table_resize(self):
         ht = HashTable(8)
 
@@ -168,7 +167,9 @@ class TestHashTable(unittest.TestCase):
         ht.put("key-8", "val-8")
         ht.put("key-9", "val-9")
 
-        self.assertTrue(len(ht.storage) == 16)
+        ht.resize(1024)
+
+        self.assertTrue(len(ht.storage) == 1024)
 
         return_value = ht.get("key-0")
         self.assertTrue(return_value == "val-0")
@@ -191,8 +192,6 @@ class TestHashTable(unittest.TestCase):
         return_value = ht.get("key-9")
         self.assertTrue(return_value == "val-9")
 
-=======
->>>>>>> 6cb9eb7c182f84d79f77d1ab833eee13fa8073af
 
 if __name__ == '__main__':
     unittest.main()
